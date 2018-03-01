@@ -12,6 +12,7 @@ using GymP.Models;
 
 namespace GymP.Controllers
 {
+    
     [Authorize]
     public class AccountController : Controller
     {

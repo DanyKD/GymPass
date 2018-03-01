@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using GymP.Models;
+using System.Web.Security;
 
 namespace GymP.Controllers
 {
@@ -21,13 +22,14 @@ namespace GymP.Controllers
             return View(db.GymClasses.ToList());
         }
         public ActionResult BookingToggle(int id)
-        {
+        {            
             GymClass CurrentClass = db.GymClasses.Where(g => g.Id == id).FirstOrDefault();
             ApplicationUser CurrentUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            
             if (CurrentClass.AttendingMembers.Contains(CurrentUser))
             {
                 CurrentClass.AttendingMembers.Remove(CurrentUser);
-                db.SaveChanges();
+                db.SaveChanges();                
             }
             else
             {
@@ -53,6 +55,7 @@ namespace GymP.Controllers
         }
 
         // GET: GymClasses/Create
+        [Authorize(Roles="Admin")]
         public ActionResult Create()
         {
             return View();
@@ -76,6 +79,7 @@ namespace GymP.Controllers
         }
 
         // GET: GymClasses/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -95,6 +99,7 @@ namespace GymP.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "Id,Name,StartTime,Duration,Description")] GymClass gymClass)
         {
             if (ModelState.IsValid)
@@ -107,6 +112,7 @@ namespace GymP.Controllers
         }
 
         // GET: GymClasses/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -122,6 +128,7 @@ namespace GymP.Controllers
         }
 
         // POST: GymClasses/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

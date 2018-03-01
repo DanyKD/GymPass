@@ -9,7 +9,8 @@ namespace GymP.Models
 {
     // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
     public class ApplicationUser : IdentityUser
-    {
+    {   
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -19,6 +20,14 @@ namespace GymP.Models
         }
         public DbSet<GymClass> GymClass { get; set; }
         public virtual ICollection<GymClass> AttendedClasses { get; set; }
+        //public bool Logged()
+        //{
+        //    if(User.Identity.IsAuthenticated)
+        //    {
+        //        return true;   
+        //    }
+        //    else return false;
+        //}
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
