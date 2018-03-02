@@ -43,14 +43,9 @@ namespace GymP.Migrations
             var userManager = new UserManager<ApplicationUser>(userStore);
             var user = new ApplicationUser();
             user.Email = "admin@Gymbokning.se";
-            user.UserName= "admin@Gymbokning.se";
+            user.UserName = "admin@Gymbokning.se";
             userManager.Create(user, "Dafa7788+");
-            userManager.AddToRole(user.Id,roleName);
-
-
-            //context.Users.AddOrUpdate(p => p.UserName,
-            //new ApplicationUser { UserName = "admin@gymbooking.se", Email = "admin@gymbooking.se",PasswordHash="Dafa7788+"});
-            
+            userManager.AddToRole(user.Id, roleName);
         }
     }
 }
