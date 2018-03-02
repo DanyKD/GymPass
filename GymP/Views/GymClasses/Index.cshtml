@@ -3,16 +3,16 @@
 
 @{
     ViewBag.Title = "Index";
-    var Booking="";
+    
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-default" , @style= "color:White;background-color: Red" })
     @if (User.Identity.IsAuthenticated)
     {
-     <span>|</span>     
+     <span>|</span>         
      @Html.ActionLink(User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
     }
 </p>
@@ -34,50 +34,53 @@
         <th></th>
     </tr>
 
+
     @foreach (var item in Model)
     {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StartTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Duration)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-
-        @if (User.IsInRole("Admin"))
-    {
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })|
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-        </td>
-}
-            
-            @if (User.Identity.IsAuthenticated)
+        if (item.StartTime >= DateTime.Now)
         {
-            if (item.AttendingMembers.Any(u => u.Email == User.Identity.Name))
-            {
-            <td>
-                @Html.ActionLink("Cancel Booking", "BookingToggle", new { id = item.Id }, new { @class = "btn btn-default" })
-            </td>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Duration)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id })|
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    </td>
+                }
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    if (item.AttendingMembers.Any(u => u.Email == User.Identity.Name))
+                    {
+                        <td>
+                            @Html.ActionLink("Cancel Booking", "BookingToggle", new { id = item.Id }, new { @class = "btn btn-default" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.ActionLink("Book", "BookingToggle", new { id = item.Id }, new { @class = "btn btn-default" })
+                        </td>
+                    }
+                }
+
+            </tr>
+        }
     }
-    else
-    {
-        <td>
-            @Html.ActionLink("Book", "BookingToggle", new { id = item.Id }, new { @class = "btn btn-default" })
-        </td>
-}
-}
-            }
-            
-        </tr>
-     }
-        
+  
 
 </table>
